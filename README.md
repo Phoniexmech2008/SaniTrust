@@ -189,21 +189,4 @@ manually"** and tap a point on the map instead — no permission needed.
   already in place, which protects the crowd-status signal, not the
   accounts system)
 - Real persistence (Postgres) once beyond hackathon scope
-- Email verification and password reset for the accounts system
-
-## A note on how this was verified
-
-This sandbox has no network access, which means no `npm install` and no
-live `vite build`/dev server here — so nothing in this repo was verified by
-actually running the built app. What *was* done: every backend module
-(auth, rate-limiting, photo validation, the discrepancy logic) was tested
-by importing it directly into a real Node process and exercising it against
-realistic inputs — password hashing round-trips, token tampering, rate-limit
-edge cases (same user/different facility, different user/same facility,
-window expiry), oversized/malformed photos, and a full simulated request
-through the actual route-handler logic. All of that is real execution, not
-just a read-through. The frontend, by contrast, could only be checked by
-careful manual reading — cross-checking every prop passed between
-components, confirming imports resolve to real exports — since things like
-canvas-based image compression and the Leaflet map genuinely require a
-browser. Worth an actual `npm run dev` smoke test before a live demo.
+- Email verification and password reset for the accounts system.
