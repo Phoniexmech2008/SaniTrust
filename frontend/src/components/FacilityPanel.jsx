@@ -11,7 +11,7 @@ function timeAgo(iso) {
   return `${days} days ago`;
 }
 
-export default function FacilityPanel({ facilityId, onClose }) {
+export default function FacilityPanel({ facilityId, onClose, distanceKm }) {
   const [facility, setFacility] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -63,6 +63,12 @@ export default function FacilityPanel({ facilityId, onClose }) {
           <dt>Citizen reports</dt>
           <dd>{facility.reportCount}</dd>
         </div>
+        {typeof distanceKm === "number" && (
+          <div>
+            <dt>Distance</dt>
+            <dd>{distanceKm.toFixed(1)} km away</dd>
+          </div>
+        )}
       </dl>
 
       <CheckInForm facilityId={facility.id} onSubmitted={load} />
@@ -79,6 +85,14 @@ export default function FacilityPanel({ facilityId, onClose }) {
               <span className="facility-panel__history-time">{timeAgo(h.timestamp)}</span>
             </div>
             {h.comment && <p className="facility-panel__history-comment">{h.comment}</p>}
+            {h.photo && (
+              <img
+                className="facility-panel__history-photo"
+                src={h.photo}
+                alt="Photo evidence from this report"
+                loading="lazy"
+              />
+            )}
           </div>
         ))}
       </div>

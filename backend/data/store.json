@@ -7,7 +7,7 @@
       "lat": 20.2716,
       "lng": 85.8404,
       "officialStatus": "operational",
-      "officialLastUpdated": "2026-07-27T18:17:47.744Z"
+      "officialLastUpdated": "2026-07-28T05:22:50.473Z"
     },
     {
       "id": "fac_02",
@@ -16,7 +16,7 @@
       "lat": 20.2679,
       "lng": 85.8412,
       "officialStatus": "operational",
-      "officialLastUpdated": "2026-08-13T18:17:47.744Z"
+      "officialLastUpdated": "2026-08-14T05:22:50.474Z"
     },
     {
       "id": "fac_03",
@@ -25,7 +25,7 @@
       "lat": 20.2961,
       "lng": 85.7963,
       "officialStatus": "operational",
-      "officialLastUpdated": "2026-07-22T18:17:47.744Z"
+      "officialLastUpdated": "2026-07-23T05:22:50.474Z"
     },
     {
       "id": "fac_04",
@@ -34,7 +34,7 @@
       "lat": 20.2551,
       "lng": 85.833,
       "officialStatus": "under_maintenance",
-      "officialLastUpdated": "2026-08-14T18:17:47.744Z"
+      "officialLastUpdated": "2026-08-15T05:22:50.474Z"
     },
     {
       "id": "fac_05",
@@ -43,7 +43,7 @@
       "lat": 20.2691,
       "lng": 85.8385,
       "officialStatus": "operational",
-      "officialLastUpdated": "2026-08-03T18:17:47.744Z"
+      "officialLastUpdated": "2026-08-04T05:22:50.474Z"
     },
     {
       "id": "fac_06",
@@ -52,7 +52,7 @@
       "lat": 20.286,
       "lng": 85.8188,
       "officialStatus": "operational",
-      "officialLastUpdated": "2026-08-12T18:17:47.744Z"
+      "officialLastUpdated": "2026-08-13T05:22:50.474Z"
     },
     {
       "id": "fac_07",
@@ -60,9 +60,8 @@
       "type": "street",
       "lat": 20.356,
       "lng": 85.8189,
-      "officialStatus": "under_maintenance",
-      "officialLastUpdated": "2026-08-15T18:20:36.379Z",
-      "lastUpdatedBy": "usr_1786818029061"
+      "officialStatus": "operational",
+      "officialLastUpdated": "2026-07-17T05:22:50.474Z"
     },
     {
       "id": "fac_08",
@@ -71,7 +70,7 @@
       "lat": 20.3006,
       "lng": 85.7749,
       "officialStatus": "operational",
-      "officialLastUpdated": "2026-08-10T18:17:47.744Z"
+      "officialLastUpdated": "2026-08-11T05:22:50.474Z"
     },
     {
       "id": "fac_09",
@@ -80,7 +79,7 @@
       "lat": 20.2687,
       "lng": 85.8382,
       "officialStatus": "operational",
-      "officialLastUpdated": "2026-08-15T18:17:47.744Z"
+      "officialLastUpdated": "2026-08-16T05:22:50.474Z"
     },
     {
       "id": "fac_10",
@@ -89,7 +88,7 @@
       "lat": 20.2734,
       "lng": 85.8355,
       "officialStatus": "operational",
-      "officialLastUpdated": "2026-08-07T18:17:47.744Z"
+      "officialLastUpdated": "2026-08-08T05:22:50.474Z"
     }
   ],
   "checkins": [
@@ -103,7 +102,7 @@
         "lock": false
       },
       "comment": "Door lock broken, no water since days.",
-      "timestamp": "2026-08-09T18:17:47.744Z"
+      "timestamp": "2026-08-10T05:22:50.474Z"
     },
     {
       "id": "chk_002",
@@ -115,7 +114,7 @@
         "lock": false
       },
       "comment": "Still broken.",
-      "timestamp": "2026-08-12T18:17:47.744Z"
+      "timestamp": "2026-08-13T05:22:50.474Z"
     },
     {
       "id": "chk_003",
@@ -127,7 +126,7 @@
         "lock": false
       },
       "comment": "Water back but very unclean.",
-      "timestamp": "2026-08-14T18:17:47.744Z"
+      "timestamp": "2026-08-15T05:22:50.474Z"
     },
     {
       "id": "chk_004",
@@ -139,7 +138,7 @@
         "lock": true
       },
       "comment": "Clean today.",
-      "timestamp": "2026-08-14T18:17:47.744Z"
+      "timestamp": "2026-08-15T05:22:50.474Z"
     },
     {
       "id": "chk_005",
@@ -151,7 +150,7 @@
         "lock": true
       },
       "comment": "",
-      "timestamp": "2026-08-11T18:17:47.744Z"
+      "timestamp": "2026-08-12T05:22:50.474Z"
     },
     {
       "id": "chk_006",
@@ -163,7 +162,7 @@
         "lock": true
       },
       "comment": "No lights at night, unsafe.",
-      "timestamp": "2026-08-06T18:17:47.744Z"
+      "timestamp": "2026-08-07T05:22:50.474Z"
     },
     {
       "id": "chk_007",
@@ -175,7 +174,7 @@
         "lock": true
       },
       "comment": "Same issue.",
-      "timestamp": "2026-08-10T18:17:47.744Z"
+      "timestamp": "2026-08-11T05:22:50.474Z"
     },
     {
       "id": "chk_008",
@@ -187,7 +186,7 @@
         "lock": true
       },
       "comment": "",
-      "timestamp": "2026-08-13T18:17:47.744Z"
+      "timestamp": "2026-08-14T05:22:50.474Z"
     },
     {
       "id": "chk_009",
@@ -199,7 +198,7 @@
         "lock": true
       },
       "comment": "Renovation in progress, understandable.",
-      "timestamp": "2026-08-14T18:17:47.744Z"
+      "timestamp": "2026-08-15T05:22:50.474Z"
     },
     {
       "id": "chk_010",
@@ -211,7 +210,7 @@
         "lock": true
       },
       "comment": "Needs cleaning, smells bad.",
-      "timestamp": "2026-08-08T18:17:47.744Z"
+      "timestamp": "2026-08-09T05:22:50.474Z"
     },
     {
       "id": "chk_011",
@@ -223,7 +222,7 @@
         "lock": true
       },
       "comment": "",
-      "timestamp": "2026-08-11T18:17:47.744Z"
+      "timestamp": "2026-08-12T05:22:50.474Z"
     },
     {
       "id": "chk_012",
@@ -235,7 +234,7 @@
         "lock": true
       },
       "comment": "No water now too.",
-      "timestamp": "2026-08-14T18:17:47.744Z"
+      "timestamp": "2026-08-15T05:22:50.474Z"
     },
     {
       "id": "chk_013",
@@ -247,7 +246,7 @@
         "lock": true
       },
       "comment": "Well maintained.",
-      "timestamp": "2026-08-13T18:17:47.744Z"
+      "timestamp": "2026-08-14T05:22:50.474Z"
     },
     {
       "id": "chk_014",
@@ -259,7 +258,7 @@
         "lock": false
       },
       "comment": "Completely unusable for weeks.",
-      "timestamp": "2026-07-31T18:17:47.744Z"
+      "timestamp": "2026-08-01T05:22:50.474Z"
     },
     {
       "id": "chk_015",
@@ -271,7 +270,7 @@
         "lock": false
       },
       "comment": "Still nothing done.",
-      "timestamp": "2026-08-07T18:17:47.744Z"
+      "timestamp": "2026-08-08T05:22:50.474Z"
     },
     {
       "id": "chk_016",
@@ -283,7 +282,7 @@
         "lock": false
       },
       "comment": "Locked shut, unusable.",
-      "timestamp": "2026-08-13T18:17:47.744Z"
+      "timestamp": "2026-08-14T05:22:50.474Z"
     },
     {
       "id": "chk_017",
@@ -295,7 +294,7 @@
         "lock": true
       },
       "comment": "",
-      "timestamp": "2026-08-12T18:17:47.744Z"
+      "timestamp": "2026-08-13T05:22:50.474Z"
     },
     {
       "id": "chk_018",
@@ -307,7 +306,7 @@
         "lock": true
       },
       "comment": "Could be cleaner.",
-      "timestamp": "2026-08-14T18:17:47.744Z"
+      "timestamp": "2026-08-15T05:22:50.474Z"
     },
     {
       "id": "chk_019",
@@ -319,7 +318,7 @@
         "lock": true
       },
       "comment": "Tap broken since last week.",
-      "timestamp": "2026-08-10T18:17:47.744Z"
+      "timestamp": "2026-08-11T05:22:50.474Z"
     },
     {
       "id": "chk_020",
@@ -331,20 +330,7 @@
         "lock": true
       },
       "comment": "",
-      "timestamp": "2026-08-13T18:17:47.744Z"
-    },
-    {
-      "id": "chk_1786818005263",
-      "facilityId": "fac_06",
-      "overall": "dirty",
-      "aspects": {
-        "water": true,
-        "lighting": true,
-        "lock": true
-      },
-      "comment": "",
-      "timestamp": "2026-08-15T18:20:05.263Z",
-      "reportedBy": "usr_1786817997864"
+      "timestamp": "2026-08-14T05:22:50.474Z"
     }
   ],
   "users": [
@@ -379,6 +365,14 @@
       "role": "municipal",
       "passwordHash": "1e550f6f7d3fb93d5aa6618c4100d920:0e21db29d4142726a35e3f10b83734e82b782779338fdb44e1116ab90b5d2d7563a61356f7b880fc941704512adc4774172db5812f609116d849638949637549",
       "createdAt": "2026-08-15T18:20:29.115Z"
+    },
+    {
+      "id": "usr_1786857860351",
+      "name": "alskfaqosgfnoe",
+      "email": "asiofj@gmail.com",
+      "role": "municipal",
+      "passwordHash": "079270f731106604feeb6c9b2463f80e:b30d9166dad89dc8bf360af7f2a48e42c5b2221a05708b883129a9329a90b98cc5b6e98f1f1c0df932fc87a9111f2e9cd02bfe5e4473325723d08117644fbbde",
+      "createdAt": "2026-08-16T05:24:20.407Z"
     }
   ]
 }

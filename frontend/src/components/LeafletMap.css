@@ -4,7 +4,47 @@
   background: var(--paper);
 }
 
+.leaflet-map--picking,
+.leaflet-map--picking .leaflet-container {
+  cursor: crosshair;
+}
+
 .facility-marker {
   background: transparent;
   border: none;
+}
+
+.user-location-marker {
+  background: transparent;
+  border: none;
+}
+
+.user-location-marker__dot {
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin: 2px;
+  border-radius: 50%;
+  background: #2563eb;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5);
+  animation: user-location-pulse 2s infinite;
+}
+
+@keyframes user-location-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-location-marker__dot {
+    animation: none;
+  }
 }

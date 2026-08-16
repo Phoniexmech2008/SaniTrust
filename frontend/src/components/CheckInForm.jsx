@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api.js";
 import { useAuth } from "../context/AuthContext.jsx";
+import { compressImage } from "../utils/imageCompress.js";
 import "./CheckInForm.css";
 
 const OVERALL_OPTIONS = [
@@ -15,20 +16,41 @@ export default function CheckInForm({ facilityId, onSubmitted }) {
   const [overall, setOverall] = useState("functional");
   const [aspects, setAspects] = useState({ water: true, lighting: true, lock: true });
   const [comment, setComment] = useState("");
+  const [photo, setPhoto] = useState(null); // compressed base64 data URL, or null
+  const [photoProcessing, setPhotoProcessing] = useState(false);
+  const [photoError, setPhotoError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
   const toggleAspect = (key) =>
     setAspects((prev) => ({ ...prev, [key]: !prev[key] }));
 
+  async function handlePhotoSelect(e) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow re-selecting the same file later
+    if (!file) return;
+
+    setPhotoError(null);
+    setPhotoProcessing(true);
+    try {
+      const compressed = await compressImage(file);
+      setPhoto(compressed);
+    } catch (err) {
+      setPhotoError(err.message);
+    } finally {
+      setPhotoProcessing(false);
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
     try {
-      const updated = await api.submitCheckin(facilityId, { overall, aspects, comment });
+      const updated = await api.submitCheckin(facilityId, { overall, aspects, comment, photo });
       onSubmitted(updated);
       setComment("");
+      setPhoto(null);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -106,6 +128,33 @@ export default function CheckInForm({ facilityId, onSubmitted }) {
         onChange={(e) => setComment(e.target.value)}
         rows={3}
       />
+
+      <div className="checkin-form__photo">
+        {photo ? (
+          <div className="checkin-form__photo-preview">
+            <img src={photo} alt="Attached evidence preview" />
+            <button
+              type="button"
+              className="checkin-form__photo-remove"
+              onClick={() => setPhoto(null)}
+            >
+              Remove photo
+            </button>
+          </div>
+        ) : (
+          <label className="checkin-form__photo-attach">
+            <input
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handlePhotoSelect}
+              disabled={photoProcessing}
+            />
+            {photoProcessing ? "Processing…" : "📷 Attach a photo (optional)"}
+          </label>
+        )}
+        {photoError && <p className="checkin-form__error">{photoError}</p>}
+      </div>
 
       {error && <p className="checkin-form__error">{error}</p>}
 

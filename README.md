@@ -3,154 +3,207 @@
 **PS-13.** A crowd-verified real-time status tool for public toilets. Citizens
 check in and rate facilities; the system cross-checks those reports against
 official municipal maintenance records and flags facilities that have been
-silently broken for longer than the record admits — surfacing the *gap*
-between what's reported and what's actually true on the ground.
+silently broken for longer than the record admits.
 
-## Why this design
+## This session's changes
 
-The core insight of the problem statement isn't "let people rate toilets" —
-plenty of apps do that. It's the **discrepancy engine**: comparing crowd
-sentiment against official records to catch cases where a facility has been
-broken for weeks but the municipal record still says "operational" because
-nobody logged it. That comparison is the actual product, so it's implemented
-as its own module (`backend/logic.js`) rather than buried inside a route
-handler — it's the piece you should be able to explain in detail if a judge
-asks "how do you decide what gets flagged?"
+**1. Reconstructed the backend auth wiring.** The zip you'd exported from an
+earlier session had `backend/auth.js` (password hashing + token helpers) and
+a fully-built auth-aware frontend (`AuthContext`, `ProtectedRoute`,
+`LoginPage`, sign-in-aware `Layout`), but was missing three files that never
+made it into the export: `backend/server.js`, `backend/routes/auth.js` (the
+actual signup/login/me *endpoints* — as opposed to the crypto helpers that
+back them), and both `package.json` files. All four are rebuilt below,
+matching exactly what the existing frontend `api.js` already expects. I
+verified the password hashing, token signing, and tamper-detection logic
+directly before handing it back — see the transcript if you want the details.
 
-**Two front doors, one dataset.** Citizens get a map (`/`); municipal staff
-get a prioritized repair queue (`/admin`). Same underlying facilities, two
-different lenses on them — which mirrors how the real system would be used.
-Access to each is now backed by real accounts, not just separate URLs (see
-**Authentication** below).
+**2. Added "toilets near me" radius search.** New on the citizen map:
+- A **📍 Toilets near me** button that requests your browser location
+- Once enabled, a **slider (0.5–10 km)** filters the map to nearby facilities
+- Your location shows as a pulsing blue marker, with a translucent circle
+  showing the current search radius
+- Facility tooltips and the detail panel show distance in km
+
+New files: `frontend/src/utils/geo.js` (haversine distance),
+`frontend/src/hooks/useGeolocation.js` (wraps the browser Geolocation API),
+`frontend/src/components/RadiusControl.jsx` (the slider UI). Distance
+filtering happens entirely client-side — the backend doesn't need to know
+about it.
+
+## This session's changes (continued)
+
+Picking up after the above — three items, each verified against real code
+execution before being called done (see the note at the bottom about what
+that testing could and couldn't cover in this sandbox):
+
+**3. Manual location fallback.** Browser geolocation genuinely can fail —
+denied permission, no GPS, OS location services off — and there was no way
+around that before now. "Toilets near me" now also offers **"Set location
+manually"**: the map enters a crosshair pick-mode and a tap anywhere sets
+that point as your location, exactly as if geolocation had succeeded. Once
+a location is set (either way), **"Reposition manually"** lets you correct
+it at any time. This also makes the demo itself failure-proof — if location
+permission misbehaves on stage, tap "set manually" instead.
+
+Changed: `LeafletMap.jsx` (added a click-to-pick layer + crosshair cursor
+while active), `RadiusControl.jsx` (manual-entry buttons + picking banner),
+`CitizenMap.jsx` (now owns a single `location` state that accepts either a
+geolocation result or a manual pick, so the rest of the page treats them
+identically).
+
+**4. Rate-limiting on check-ins.** A logged-in account could otherwise spam
+a single facility to force its crowd status, or spam broadly to look like
+organic traffic. Two rules, computed straight from existing checkin history
+(no separate tracker to lose on a server restart):
+- **Per-facility cooldown** — 10 minutes between check-ins by the same user
+  on the same facility.
+- **Global cap** — 5 check-ins per user per rolling hour, across any
+  facilities.
+
+New file: `backend/rateLimit.js`. This is a different thing from the
+signup/login brute-force protection still listed under "what we'd add" below
+— that one's about failed login attempts, this one's about the integrity of
+the crowd-status signal itself.
+
+**5. Photo evidence on check-ins.** Optional photo attachment, entirely
+client-compressed before it ever leaves the browser — resized to a 1000px
+longest side and re-encoded as JPEG at 70% quality
+(`frontend/src/utils/imageCompress.js`), so even a multi-MB phone photo
+becomes a small upload. Stored as a base64 data URL directly in the JSON
+store (`backend/photoValidation.js` re-validates type/size server-side —
+JPEG/PNG/WebP only, ~1.5MB cap, SVG explicitly rejected since it can carry
+scripts). Shows as a thumbnail in the check-in form and full-size in each
+facility's report history.
 
 ## Architecture
 
 ```
 sanitrust/
-├── backend/                 Express API + JSON-file data store
-│   ├── db.js                 tiny hand-rolled persistence layer
-│   ├── auth.js                 password hashing + session tokens
-│   ├── logic.js               discrepancy + priority scoring
-│   ├── seed.js                 mock facilities & checkins (Bhubaneswar)
-│   ├── routes/facilities.js     REST endpoints
-│   ├── routes/auth.js           signup / login / session check
-│   └── server.js                entry point
-└── frontend/                React (Vite) app
+├── backend/
+│   ├── auth.js                 password hashing (scrypt) + signed tokens (HMAC)
+│   ├── db.js                    JSON-file persistence
+│   ├── logic.js                  discrepancy + priority scoring
+│   ├── rateLimit.js               check-in cooldown + hourly cap
+│   ├── photoValidation.js          check-in photo type/size validation
+│   ├── seed.js                    mock facilities & checkins (Bhubaneswar)
+│   ├── routes/
+│   │   ├── auth.js                 POST /signup, /login, GET /me
+│   │   └── facilities.js            facility CRUD, protected by requireAuth/requireRole
+│   └── server.js                     entry point, mounts both routers
+└── frontend/
     └── src/
-        ├── api.js                fetch client (attaches session token)
-        ├── context/AuthContext.jsx  session state, login/signup/logout
-        ├── pages/LoginPage.jsx      combined login + signup, role select
-        ├── pages/CitizenMap.jsx   Leaflet map + facility detail
-        ├── pages/AdminDashboard.jsx  priority repair queue
-        └── components/           StatusBadge, CheckInForm, ProtectedRoute, etc.
+        ├── api.js                    fetch client, attaches bearer token
+        ├── context/AuthContext.jsx    session state, login/signup/logout
+        ├── components/
+        │   ├── ProtectedRoute.jsx      route guard by login/role
+        │   ├── RadiusControl.jsx        near-me slider + manual location UI
+        │   ├── LeafletMap.jsx            markers, user location, click-to-pick
+        │   ├── CheckInForm.jsx            report form + photo attach
+        │   └── FacilityPanel.jsx           detail panel + report history/photos
+        ├── hooks/useGeolocation.js     browser location wrapper
+        ├── utils/
+        │   ├── geo.js                    haversine distance
+        │   └── imageCompress.js           client-side photo downscaling
+        └── pages/
+            ├── CitizenMap.jsx            map + radius search + location state
+            ├── LoginPage.jsx               sign in / sign up
+            └── AdminDashboard.jsx           municipal-only repair queue
 ```
 
-No external database, no paid map API — the map uses OpenStreetMap tiles
-and Leaflet, and persistence is a JSON file. This is deliberate: it means
-the whole thing runs on a laptop with no accounts, keys, or billing setup,
-which matters when you're demoing on hackathon wifi.
+## How auth works
+
+- **Passwords**: hashed with Node's built-in `scrypt` (memory-hard, no
+  native `bcrypt` dependency) plus a random salt per user.
+- **Sessions**: a hand-rolled signed token — `base64url(payload) + "." +
+  HMAC-SHA256(payload)` — same shape as a JWT, verified server-side on every
+  protected request. No session storage needed; the signature *is* the proof.
+- **Roles**: `citizen` or `municipal`, chosen at signup. Checking in on a
+  facility requires being logged in (either role); viewing and resolving the
+  admin repair queue requires the `municipal` role specifically.
+- Map viewing itself stays public — no login wall just to look at the map.
 
 ## How the discrepancy logic works
 
-For each facility:
-1. Take the last 5 citizen check-ins, majority-vote a **crowd status**
-   (`functional` / `dirty` / `broken`), breaking ties toward the worse
-   status — for a public-health tool, a false alarm is cheaper than a
-   missed one.
-2. Compare that against the facility's **official record**. If the crowd
-   says there's a problem, the official record says "operational," *and*
-   that record hasn't been touched in 7+ days, the facility is flagged.
-3. **Priority score** = crowd-severity weight × 10 + days the record has
-   gone stale (capped at 30) + number of corroborating negative reports.
-   Simple, explainable arithmetic — you can walk a judge through exactly
-   why any given facility ranks where it does.
-
-This logic lives entirely in `backend/logic.js` if you want to read or
-tune it.
-
-## Authentication
-
-Both check-ins and municipal actions are now backed by real accounts
-rather than open routes:
-
-- **Password storage** — `crypto.scryptSync` with a random salt per user
-  (`salt:derivedKey`, hex-encoded). No plaintext passwords stored, and no
-  external hashing library — scrypt is built into Node.
-- **Session tokens** — hand-rolled, JWT-shaped but dependency-free:
-  `base64url(JSON payload) + "." + HMAC-SHA256 signature`, signed with a
-  server-side secret. Verification checks the signature with a
-  constant-time comparison, then checks expiry (7-day TTL). No external
-  JWT library — same "explainable, no black boxes" philosophy as the rest
-  of the backend.
-- **Roles** — `citizen` or `municipal`, chosen at signup. Enforcement is
-  server-side, not just a hidden UI link: `/api/flagged` and
-  `/api/facilities/:id/official-update` require `requireAuth` +
-  `requireRole("municipal")`; `/api/facilities/:id/checkins` requires
-  `requireAuth` (any logged-in role can check in). Viewing the map
-  (`GET /api/facilities`) stays public.
-- **Frontend** — `AuthContext` holds session state and persists the token
-  in `localStorage`, restoring it via `GET /api/auth/me` on page load.
-  `ProtectedRoute` gates `/admin` behind both login and the `municipal`
-  role, redirecting to `/login` (and back again after a successful
-  sign-in). The check-in form shows a "sign in to report" prompt instead
-  of submitting anonymously.
-- **Re-seeding** (`npm run seed`) resets the demo facilities/check-ins but
-  preserves any accounts people have already signed up with.
-
-This lives in `backend/auth.js`, `backend/routes/auth.js`,
-`frontend/src/context/AuthContext.jsx`, and
-`frontend/src/components/ProtectedRoute.jsx`.
+For each facility: take the last 5 citizen check-ins, majority-vote a crowd
+status (ties break toward the worse status). If the crowd says there's a
+problem, the official record says "operational," and that record hasn't been
+touched in 7+ days, the facility is flagged. Priority score = crowd-severity
+weight × 10 + days stale (capped at 30) + number of corroborating reports.
+Full logic in `backend/logic.js`.
 
 ## Running it locally
 
-You'll need Node.js 18+ installed. Two terminals:
+Node.js 18+ required. Two terminals:
 
 **Terminal 1 — backend**
 ```bash
 cd backend
 npm install
-npm run seed     # populates data/store.json with mock facilities
-npm start        # runs on http://localhost:4000
+npm run seed     # populates data/store.json (preserves existing user accounts)
+npm start         # http://localhost:4000
 ```
 
 **Terminal 2 — frontend**
 ```bash
 cd frontend
 npm install
-npm run dev       # runs on http://localhost:5173
+npm run dev        # http://localhost:5173
 ```
 
-Open `http://localhost:5173`. The dev server proxies `/api` calls to the
-backend automatically (see `frontend/vite.config.js`), so you don't need
-to configure CORS ports by hand.
+The frontend dev server proxies `/api` to the backend automatically — no
+CORS setup needed (see `frontend/vite.config.js`).
+
+**To try "near me"**: your browser will prompt for location permission when
+you click "Toilets near me." On `localhost` this works without HTTPS; if you
+ever deploy this, geolocation requires an HTTPS origin. If permission is
+denied or geolocation fails for any reason, click **"Set location
+manually"** and tap a point on the map instead — no permission needed.
 
 ## Demo script (suggested)
 
-1. **Citizen map** (`/`) — point out the color-coded markers (teal =
-   fine, amber = needs cleaning, red = broken, grey = no reports yet).
-   Click a red marker — e.g. **Patia Square Toilet Block** — to open the
-   detail panel and show the report history.
-2. Click a facility, try to submit a check-in while logged out — show the
-   "sign in to report" prompt instead of a silent failure.
-3. **Sign up** as a citizen, then submit a check-in to show the live
-   report flow now attributed to an account.
-4. Sign out, sign back in (or sign up) as **municipal staff** — note the
-   "Municipal Dashboard" link only appears for that role, and going to
-   `/admin` directly while logged out or logged in as a citizen redirects
-   away.
-5. On the **Municipal Dashboard** (`/admin`) — this is the payoff:
-   facilities ranked by priority score, each one showing exactly *why*
-   it's flagged (crowd status vs. official record vs. days of silence).
-6. Click **"Mark as being addressed"** on one — show it drop out of the
-   queue and, back on the map, watch its marker reflect the update.
+1. **Sign up** as a citizen, then in another browser/incognito window sign up
+   as municipal staff — shows the role-based access working live.
+2. On the **Citizen Map**, click "Toilets near me." If location permission
+   is denied or acts up (it's real geolocation — it can genuinely fail),
+   click **"Set location manually"** and tap a spot on the map instead —
+   worth calling out explicitly, since it's the fix for a real bug and a
+   deliberate fallback, not just a demo trick.
+3. Drag the radius slider — narrate that this is client-side filtering
+   against the same dataset, not a different query.
+4. Click a flagged (red) marker, submit a check-in — note it requires
+   login, then attach a photo to show the evidence pipeline.
+5. Immediately try to check in on the same facility again — show the
+   rate-limit message rather than letting it through silently.
+6. Switch to the **Municipal Dashboard** (only visible/accessible to the
+   municipal account) — walk through the priority queue, open a flagged
+   facility's history to show the attached photo, and resolve one.
 
 ## What we'd add with more time
 
-- Photo evidence attached to check-ins
-- SMS/IVR check-in for citizens without smartphones (genuinely important
-  for this use case — the target users of public toilets skew toward
-  people less likely to have a data connection)
+- SMS/IVR check-in for citizens without smartphones or reliable location
+  access — genuinely important, since public-toilet users skew toward
+  people less likely to have a data connection
+- Rate-limiting on signup/login specifically, to blunt brute-force
+  credential-guessing attempts (separate from the check-in rate-limiting
+  already in place, which protects the crowd-status signal, not the
+  accounts system)
 - Real persistence (Postgres) once beyond hackathon scope
 - Email verification and password reset for the accounts system
-- Rate-limiting check-ins per account to make the crowd signal harder to
-  game
+
+## A note on how this was verified
+
+This sandbox has no network access, which means no `npm install` and no
+live `vite build`/dev server here — so nothing in this repo was verified by
+actually running the built app. What *was* done: every backend module
+(auth, rate-limiting, photo validation, the discrepancy logic) was tested
+by importing it directly into a real Node process and exercising it against
+realistic inputs — password hashing round-trips, token tampering, rate-limit
+edge cases (same user/different facility, different user/same facility,
+window expiry), oversized/malformed photos, and a full simulated request
+through the actual route-handler logic. All of that is real execution, not
+just a read-through. The frontend, by contrast, could only be checked by
+careful manual reading — cross-checking every prop passed between
+components, confirming imports resolve to real exports — since things like
+canvas-based image compression and the Leaflet map genuinely require a
+browser. Worth an actual `npm run dev` smoke test before a live demo.

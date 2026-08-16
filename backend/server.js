@@ -1,5 +1,5 @@
 // server.js
-// Entry point. Wires up middleware and mounts the facilities router.
+// Entry point. Wires up middleware and mounts both routers.
 
 import express from "express";
 import cors from "cors";
@@ -10,7 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(cors());
-app.use(express.json());
+// Default express.json() limit is 100kb — too small for a base64-encoded
+// photo. 6mb comfortably covers our ~1.5MB photo cap (base64 adds ~33%
+// overhead) plus the rest of a normal checkin payload.
+app.use(express.json({ limit: "6mb" }));
 
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 app.use("/api/auth", authRouter);

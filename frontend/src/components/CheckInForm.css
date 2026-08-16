@@ -100,3 +100,52 @@
   text-align: center;
   text-decoration: none;
 }
+
+.checkin-form__photo-attach {
+  display: block;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-soft);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.checkin-form__photo-attach:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.checkin-form__photo-attach input {
+  display: none;
+}
+
+.checkin-form__photo-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkin-form__photo-preview img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+
+.checkin-form__photo-remove {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+  color: var(--status-bad);
+}
+
+.checkin-form__photo-remove:hover {
+  border-color: var(--status-bad);
+}

@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Tooltip, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip, Circle, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import { useEffect } from "react";
 import "./LeafletMap.css";
@@ -31,6 +31,17 @@ function markerIcon(status, isSelected) {
   });
 }
 
+// A distinct pulsing-dot style for "you are here" — deliberately not
+// just another status color, so it can't be mistaken for a facility.
+function userLocationIcon() {
+  return L.divIcon({
+    className: "user-location-marker",
+    html: `<span class="user-location-marker__dot"></span>`,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+  });
+}
+
 // Recenters the map when the selected facility changes, without
 // forcing a full remount of the map container.
 function FlyToSelected({ facility }) {
@@ -45,12 +56,48 @@ function FlyToSelected({ facility }) {
   return null;
 }
 
-export default function LeafletMap({ facilities, selectedId, onSelect }) {
+// Recenters on the user's location the moment it's acquired, and
+// zooms in enough that a small-radius search is actually legible.
+function FlyToUser({ userLocation }) {
+  const map = useMap();
+  useEffect(() => {
+    if (userLocation) {
+      map.flyTo([userLocation.lat, userLocation.lng], 14, { duration: 0.8 });
+    }
+  }, [userLocation, map]);
+  return null;
+}
+
+// When manual-pick mode is on, clicking anywhere on the map reports
+// that lat/lng back up as the user's location — the fallback for when
+// browser geolocation is denied, unavailable, or just not trusted.
+function ManualLocationPicker({ active, onPick }) {
+  useMapEvents({
+    click(e) {
+      if (active) onPick({ lat: e.latlng.lat, lng: e.latlng.lng });
+    },
+  });
+  return null;
+}
+
+export default function LeafletMap({
+  facilities,
+  selectedId,
+  onSelect,
+  userLocation,
+  radiusKm,
+  manualPickMode,
+  onManualPick,
+}) {
   const center = [20.2961, 85.8245]; // Bhubaneswar
   const selected = facilities.find((f) => f.id === selectedId);
 
   return (
-    <MapContainer center={center} zoom={12} className="leaflet-map">
+    <MapContainer
+      center={center}
+      zoom={12}
+      className={`leaflet-map ${manualPickMode ? "leaflet-map--picking" : ""}`}
+    >
       <TileLayer
         attribution='&copy; OpenStreetMap contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -64,10 +111,34 @@ export default function LeafletMap({ facilities, selectedId, onSelect }) {
         >
           <Tooltip direction="top" offset={[0, -8]}>
             {f.name}
+            {typeof f.distanceKm === "number" && (
+              <> &middot; {f.distanceKm.toFixed(1)} km</>
+            )}
           </Tooltip>
         </Marker>
       ))}
+
+      {userLocation && (
+        <>
+          <Marker position={[userLocation.lat, userLocation.lng]} icon={userLocationIcon()}>
+            <Tooltip direction="top" offset={[0, -8]}>You are here</Tooltip>
+          </Marker>
+          <Circle
+            center={[userLocation.lat, userLocation.lng]}
+            radius={radiusKm * 1000}
+            pathOptions={{
+              color: "#10233a",
+              weight: 1,
+              fillColor: "#10233a",
+              fillOpacity: 0.05,
+            }}
+          />
+        </>
+      )}
+
       <FlyToSelected facility={selected} />
+      <FlyToUser userLocation={userLocation} />
+      <ManualLocationPicker active={manualPickMode} onPick={onManualPick} />
     </MapContainer>
   );
 }

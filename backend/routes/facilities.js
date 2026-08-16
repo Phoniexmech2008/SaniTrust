@@ -7,6 +7,8 @@ import { Router } from "express";
 import { readStore, mutateStore } from "../db.js";
 import { computeFacilityStatus, rankFlagged } from "../logic.js";
 import { requireAuth, requireRole } from "../auth.js";
+import { checkRateLimit } from "../rateLimit.js";
+import { validatePhoto } from "../photoValidation.js";
 
 export const facilitiesRouter = Router();
 
@@ -37,14 +39,27 @@ facilitiesRouter.get("/facilities/:id", (req, res) => {
 });
 
 // POST /api/facilities/:id/checkins
-// body: { overall: "functional"|"dirty"|"broken", aspects: {water,lighting,lock}, comment }
+// body: { overall: "functional"|"dirty"|"broken", aspects: {water,lighting,lock},
+//         comment, photo? } — photo is an optional base64 data URL.
 // Requires login — checking in as an anonymous, untracked visitor would
-// make the crowd-status signal too easy to spam.
+// make the crowd-status signal too easy to spam. Also rate-limited (see
+// rateLimit.js) so a logged-in account can't spam it either.
 facilitiesRouter.post("/facilities/:id/checkins", requireAuth, (req, res) => {
-  const { overall, aspects, comment } = req.body;
+  const { overall, aspects, comment, photo } = req.body;
 
   if (!["functional", "dirty", "broken"].includes(overall)) {
     return res.status(400).json({ error: "overall must be functional, dirty, or broken" });
+  }
+
+  const photoCheck = validatePhoto(photo);
+  if (!photoCheck.valid) {
+    return res.status(photoCheck.status).json({ error: photoCheck.error });
+  }
+
+  const { checkins: existingCheckins } = readStore();
+  const rateCheck = checkRateLimit(existingCheckins, req.user.id, req.params.id);
+  if (!rateCheck.allowed) {
+    return res.status(429).json({ error: rateCheck.reason });
   }
 
   const result = mutateStore((store) => {
@@ -57,6 +72,7 @@ facilitiesRouter.post("/facilities/:id/checkins", requireAuth, (req, res) => {
       overall,
       aspects: aspects || {},
       comment: comment || "",
+      photo: photoCheck.photo,
       timestamp: new Date().toISOString(),
       reportedBy: req.user.id,
     };
