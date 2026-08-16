@@ -1,0 +1,102 @@
+.checkin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.checkin-form__label {
+  color: var(--ink-soft);
+}
+
+.checkin-form__overall {
+  display: flex;
+  gap: 6px;
+}
+
+.checkin-form__pill {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  padding: 8px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.checkin-form__pill input {
+  display: none;
+}
+
+.checkin-form__pill.is-selected {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.checkin-form__aspects {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.checkin-form__aspects label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkin-form__comment {
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  resize: vertical;
+  background: var(--paper);
+}
+
+.checkin-form__error {
+  color: var(--status-bad);
+  font-size: 12px;
+  margin: 0;
+}
+
+.checkin-form__submit {
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 10px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.checkin-form__submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.checkin-form__submit:not(:disabled):hover {
+  background: var(--ink-soft);
+}
+
+.checkin-form__locked-text {
+  color: var(--ink-soft);
+  font-size: 13px;
+  margin: 0;
+}
+
+.checkin-form__signin-link {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}

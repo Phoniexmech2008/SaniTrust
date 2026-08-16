@@ -1,0 +1,10 @@
+.leaflet-map {
+  height: 100%;
+  width: 100%;
+  background: var(--paper);
+}
+
+.facility-marker {
+  background: transparent;
+  border: none;
+}

@@ -1,0 +1,114 @@
+.facility-panel {
+  position: relative;
+  width: 360px;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto;
+  background: var(--paper);
+  border-left: 1px solid var(--line);
+  padding: 20px;
+}
+
+.facility-panel__loading {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.facility-panel__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ink-soft);
+}
+
+.facility-panel__id {
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+}
+
+.facility-panel__name {
+  font-size: 19px;
+  margin-bottom: 12px;
+  padding-right: 24px;
+}
+
+.facility-panel__badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.facility-panel__flag {
+  color: var(--status-warn);
+  font-weight: 500;
+}
+
+.facility-panel__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0 0 18px 0;
+  padding: 12px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.facility-panel__meta dt {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.facility-panel__meta dd {
+  margin: 0;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.facility-panel__history {
+  margin-top: 20px;
+}
+
+.facility-panel__history-label {
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.facility-panel__empty {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.facility-panel__history-item {
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.facility-panel__history-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.facility-panel__history-time {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.facility-panel__history-comment {
+  margin: 6px 0 0 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+}

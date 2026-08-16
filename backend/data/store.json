@@ -1,0 +1,384 @@
+{
+  "facilities": [
+    {
+      "id": "fac_01",
+      "name": "Master Canteen Square Public Toilet",
+      "type": "street",
+      "lat": 20.2716,
+      "lng": 85.8404,
+      "officialStatus": "operational",
+      "officialLastUpdated": "2026-07-27T18:17:47.744Z"
+    },
+    {
+      "id": "fac_02",
+      "name": "Bhubaneswar Railway Station – Platform 1",
+      "type": "transit",
+      "lat": 20.2679,
+      "lng": 85.8412,
+      "officialStatus": "operational",
+      "officialLastUpdated": "2026-08-13T18:17:47.744Z"
+    },
+    {
+      "id": "fac_03",
+      "name": "Baramunda Bus Stand Toilet Block",
+      "type": "transit",
+      "lat": 20.2961,
+      "lng": 85.7963,
+      "officialStatus": "operational",
+      "officialLastUpdated": "2026-07-22T18:17:47.744Z"
+    },
+    {
+      "id": "fac_04",
+      "name": "Ekamra Park Public Convenience",
+      "type": "park",
+      "lat": 20.2551,
+      "lng": 85.833,
+      "officialStatus": "under_maintenance",
+      "officialLastUpdated": "2026-08-14T18:17:47.744Z"
+    },
+    {
+      "id": "fac_05",
+      "name": "Unit 1 Market Complex Toilet",
+      "type": "market",
+      "lat": 20.2691,
+      "lng": 85.8385,
+      "officialStatus": "operational",
+      "officialLastUpdated": "2026-08-03T18:17:47.744Z"
+    },
+    {
+      "id": "fac_06",
+      "name": "Kalinga Stadium Public Facility",
+      "type": "sports",
+      "lat": 20.286,
+      "lng": 85.8188,
+      "officialStatus": "operational",
+      "officialLastUpdated": "2026-08-12T18:17:47.744Z"
+    },
+    {
+      "id": "fac_07",
+      "name": "Patia Square Toilet Block",
+      "type": "street",
+      "lat": 20.356,
+      "lng": 85.8189,
+      "officialStatus": "under_maintenance",
+      "officialLastUpdated": "2026-08-15T18:20:36.379Z",
+      "lastUpdatedBy": "usr_1786818029061"
+    },
+    {
+      "id": "fac_08",
+      "name": "IIIT Bhubaneswar Gate Public Toilet",
+      "type": "institutional",
+      "lat": 20.3006,
+      "lng": 85.7749,
+      "officialStatus": "operational",
+      "officialLastUpdated": "2026-08-10T18:17:47.744Z"
+    },
+    {
+      "id": "fac_09",
+      "name": "Rajmahal Square Toilet",
+      "type": "street",
+      "lat": 20.2687,
+      "lng": 85.8382,
+      "officialStatus": "operational",
+      "officialLastUpdated": "2026-08-15T18:17:47.744Z"
+    },
+    {
+      "id": "fac_10",
+      "name": "Capital Hospital Visitor Toilet",
+      "type": "hospital",
+      "lat": 20.2734,
+      "lng": 85.8355,
+      "officialStatus": "operational",
+      "officialLastUpdated": "2026-08-07T18:17:47.744Z"
+    }
+  ],
+  "checkins": [
+    {
+      "id": "chk_001",
+      "facilityId": "fac_01",
+      "overall": "broken",
+      "aspects": {
+        "water": false,
+        "lighting": true,
+        "lock": false
+      },
+      "comment": "Door lock broken, no water since days.",
+      "timestamp": "2026-08-09T18:17:47.744Z"
+    },
+    {
+      "id": "chk_002",
+      "facilityId": "fac_01",
+      "overall": "broken",
+      "aspects": {
+        "water": false,
+        "lighting": true,
+        "lock": false
+      },
+      "comment": "Still broken.",
+      "timestamp": "2026-08-12T18:17:47.744Z"
+    },
+    {
+      "id": "chk_003",
+      "facilityId": "fac_01",
+      "overall": "dirty",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": false
+      },
+      "comment": "Water back but very unclean.",
+      "timestamp": "2026-08-14T18:17:47.744Z"
+    },
+    {
+      "id": "chk_004",
+      "facilityId": "fac_02",
+      "overall": "functional",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "Clean today.",
+      "timestamp": "2026-08-14T18:17:47.744Z"
+    },
+    {
+      "id": "chk_005",
+      "facilityId": "fac_02",
+      "overall": "functional",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "",
+      "timestamp": "2026-08-11T18:17:47.744Z"
+    },
+    {
+      "id": "chk_006",
+      "facilityId": "fac_03",
+      "overall": "broken",
+      "aspects": {
+        "water": false,
+        "lighting": false,
+        "lock": true
+      },
+      "comment": "No lights at night, unsafe.",
+      "timestamp": "2026-08-06T18:17:47.744Z"
+    },
+    {
+      "id": "chk_007",
+      "facilityId": "fac_03",
+      "overall": "broken",
+      "aspects": {
+        "water": false,
+        "lighting": false,
+        "lock": true
+      },
+      "comment": "Same issue.",
+      "timestamp": "2026-08-10T18:17:47.744Z"
+    },
+    {
+      "id": "chk_008",
+      "facilityId": "fac_03",
+      "overall": "dirty",
+      "aspects": {
+        "water": true,
+        "lighting": false,
+        "lock": true
+      },
+      "comment": "",
+      "timestamp": "2026-08-13T18:17:47.744Z"
+    },
+    {
+      "id": "chk_009",
+      "facilityId": "fac_04",
+      "overall": "dirty",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "Renovation in progress, understandable.",
+      "timestamp": "2026-08-14T18:17:47.744Z"
+    },
+    {
+      "id": "chk_010",
+      "facilityId": "fac_05",
+      "overall": "dirty",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "Needs cleaning, smells bad.",
+      "timestamp": "2026-08-08T18:17:47.744Z"
+    },
+    {
+      "id": "chk_011",
+      "facilityId": "fac_05",
+      "overall": "dirty",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "",
+      "timestamp": "2026-08-11T18:17:47.744Z"
+    },
+    {
+      "id": "chk_012",
+      "facilityId": "fac_05",
+      "overall": "broken",
+      "aspects": {
+        "water": false,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "No water now too.",
+      "timestamp": "2026-08-14T18:17:47.744Z"
+    },
+    {
+      "id": "chk_013",
+      "facilityId": "fac_06",
+      "overall": "functional",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "Well maintained.",
+      "timestamp": "2026-08-13T18:17:47.744Z"
+    },
+    {
+      "id": "chk_014",
+      "facilityId": "fac_07",
+      "overall": "broken",
+      "aspects": {
+        "water": false,
+        "lighting": false,
+        "lock": false
+      },
+      "comment": "Completely unusable for weeks.",
+      "timestamp": "2026-07-31T18:17:47.744Z"
+    },
+    {
+      "id": "chk_015",
+      "facilityId": "fac_07",
+      "overall": "broken",
+      "aspects": {
+        "water": false,
+        "lighting": false,
+        "lock": false
+      },
+      "comment": "Still nothing done.",
+      "timestamp": "2026-08-07T18:17:47.744Z"
+    },
+    {
+      "id": "chk_016",
+      "facilityId": "fac_07",
+      "overall": "broken",
+      "aspects": {
+        "water": false,
+        "lighting": false,
+        "lock": false
+      },
+      "comment": "Locked shut, unusable.",
+      "timestamp": "2026-08-13T18:17:47.744Z"
+    },
+    {
+      "id": "chk_017",
+      "facilityId": "fac_08",
+      "overall": "functional",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "",
+      "timestamp": "2026-08-12T18:17:47.744Z"
+    },
+    {
+      "id": "chk_018",
+      "facilityId": "fac_08",
+      "overall": "dirty",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "Could be cleaner.",
+      "timestamp": "2026-08-14T18:17:47.744Z"
+    },
+    {
+      "id": "chk_019",
+      "facilityId": "fac_10",
+      "overall": "broken",
+      "aspects": {
+        "water": false,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "Tap broken since last week.",
+      "timestamp": "2026-08-10T18:17:47.744Z"
+    },
+    {
+      "id": "chk_020",
+      "facilityId": "fac_10",
+      "overall": "dirty",
+      "aspects": {
+        "water": false,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "",
+      "timestamp": "2026-08-13T18:17:47.744Z"
+    },
+    {
+      "id": "chk_1786818005263",
+      "facilityId": "fac_06",
+      "overall": "dirty",
+      "aspects": {
+        "water": true,
+        "lighting": true,
+        "lock": true
+      },
+      "comment": "",
+      "timestamp": "2026-08-15T18:20:05.263Z",
+      "reportedBy": "usr_1786817997864"
+    }
+  ],
+  "users": [
+    {
+      "id": "usr_1786816177501",
+      "name": "avi",
+      "email": "avi@gmail.com",
+      "role": "citizen",
+      "passwordHash": "04eec0cddd944688e49cf8dcffb4709a:005ff695657008d829690a2d87be2760d265cbf76c6bad713b3d31e4f8f5055f11351175791061f22eab81ca65fcce15a4864ff31582ef123eb06da04e6af03c",
+      "createdAt": "2026-08-15T17:49:37.551Z"
+    },
+    {
+      "id": "usr_1786816388943",
+      "name": "avi",
+      "email": "avighna@gmail.com",
+      "role": "municipal",
+      "passwordHash": "69e4d1a0df45ed739aa1687b26e7105b:57664ac3eb6a219aa4afa1eca609dd103a40fcf1701dbd1fdec9415e988bfed2fe6dab575ba53c9211e7d094fad9d633e17425d4d3141f5c1cb13b1f927fc245",
+      "createdAt": "2026-08-15T17:53:08.995Z"
+    },
+    {
+      "id": "usr_1786817997864",
+      "name": "Avighna",
+      "email": "debuggernut@gmail.com",
+      "role": "citizen",
+      "passwordHash": "124283248c795fe548869b38583051b7:c302ee1e63340cd0f2e9cb9041cc99891c8f7802c18fe49c2935aab40f8afd3799f69e43e5bfbac574cbf0586f363e0e815d3939cc61e703b74979ed7bdf914b",
+      "createdAt": "2026-08-15T18:19:57.920Z"
+    },
+    {
+      "id": "usr_1786818029061",
+      "name": "Avighna",
+      "email": "avighna.srivastava2008@gmail.com",
+      "role": "municipal",
+      "passwordHash": "1e550f6f7d3fb93d5aa6618c4100d920:0e21db29d4142726a35e3f10b83734e82b782779338fdb44e1116ab90b5d2d7563a61356f7b880fc941704512adc4774172db5812f609116d849638949637549",
+      "createdAt": "2026-08-15T18:20:29.115Z"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+.citizen-map {
+  display: flex;
+  height: 100%;
+}
+
+.citizen-map__stage {
+  position: relative;
+  flex: 1;
+}
+
+.citizen-map__loading {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.citizen-map__legend {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 500;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+}
+
+.citizen-map__legend span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.citizen-map__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}

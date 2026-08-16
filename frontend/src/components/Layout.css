@@ -1,0 +1,134 @@
+.layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 3px solid var(--status-warn);
+}
+
+.layout__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.layout__mark {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  background: var(--status-warn);
+  color: var(--ink);
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  letter-spacing: 0.06em;
+}
+
+.layout__title {
+  font-size: 20px;
+  color: var(--paper);
+}
+
+.layout__subtitle {
+  color: #b9c4cf;
+}
+
+.layout__nav {
+  display: flex;
+  gap: 4px;
+}
+
+.layout__link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: #b9c4cf;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.layout__link:hover {
+  color: var(--paper);
+}
+
+.layout__link.is-active {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.layout__main {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Three-column header: brand | nav | session. justify-content:
+   space-between on .layout__header already spreads these correctly. */
+.layout__session {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.layout__session-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.layout__session-name {
+  color: var(--paper);
+  font-weight: 600;
+}
+
+.layout__session-role {
+  color: var(--ink);
+  background: var(--paper);
+  padding: 3px 7px;
+  border-radius: var(--radius);
+}
+
+.layout__logout {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: none;
+  border: 1px solid #b9c4cf;
+  color: var(--paper);
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.layout__logout:hover {
+  background: rgba(244, 241, 234, 0.12);
+  border-color: var(--paper);
+}
+
+.layout__login-link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--status-warn);
+  padding: 8px 14px;
+  border-radius: var(--radius);
+}
+
+.layout__login-link:hover {
+  filter: brightness(1.05);
+}

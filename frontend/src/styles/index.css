@@ -1,0 +1,93 @@
+/* Design tokens — municipal inspection-tag identity.
+   Chosen deliberately for a civic infrastructure tool, not a
+   default dark theme: navy + paper reads like an official record,
+   amber/teal/red are the same traffic-light logic a maintenance
+   log already uses, so they need no legend to understand. */
+:root {
+  --ink: #10233a;
+  --ink-soft: #3c5169;
+  --paper: #f4f1ea;
+  --paper-raised: #ffffff;
+  --line: #d8d2c4;
+
+  --status-good: #1b7a6e;
+  --status-good-bg: #e3f1ee;
+  --status-warn: #c98a1f;
+  --status-warn-bg: #fbf0dd;
+  --status-bad: #b13c2e;
+  --status-bad-bg: #f9e5e1;
+  --status-unknown: #8a8578;
+  --status-unknown-bg: #ece9e1;
+
+  --font-display: "Archivo", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --radius: 3px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.scrollpane {
+  overflow-y: auto;
+}
+.scrollpane::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollpane::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
