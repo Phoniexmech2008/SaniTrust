@@ -1,23 +1,16 @@
 # SaniTrust — Public Toilet & Sanitation Trust Index
 
-**PS-13.** A crowd-verified real-time status tool for public toilets. Citizens
-check in and rate facilities; the system cross-checks those reports against
-official municipal maintenance records and flags facilities that have been
-silently broken for longer than the record admits — surfacing the *gap*
-between what's reported and what's actually true on the ground.
-
 ## Why this design
 
-The core insight of the problem statement isn't "let people rate toilets" —
-plenty of apps do that. It's the **discrepancy engine**: comparing crowd
+The core aim of the problem statement isn't to let people rate toilets because
+plenty of apps do that already. It's the **discrepancy engine**: comparing crowd
 sentiment against official records to catch cases where a facility has been
 broken for weeks but the municipal record still says "operational" because
 nobody logged it. That comparison is the actual product, so it's implemented
-as its own module (`backend/logic.js`) rather than buried inside a route
-handler — it's the piece you should be able to explain in detail if a judge
-asks "how do you decide what gets flagged?"
+as its own module (`backend/logic.js`) rather than being inside a route
+handler.
 
-**Two front doors, one dataset.** Citizens get a map (`/`); municipal staff
+**Two front doors, one dataset.** Citizens get a map to locate public toilets with ease(`/`); municipal staff
 get a prioritized repair queue (`/admin`). Same underlying facilities, two
 different lenses on them — which mirrors how the real system would be used.
 Access to each is now backed by real accounts, not just separate URLs (see
@@ -45,28 +38,22 @@ sanitrust/
         └── components/           StatusBadge, CheckInForm, ProtectedRoute, etc.
 ```
 
-No external database, no paid map API — the map uses OpenStreetMap tiles
-and Leaflet, and persistence is a JSON file. This is deliberate: it means
-the whole thing runs on a laptop with no accounts, keys, or billing setup,
-which matters when you're demoing on hackathon wifi.
+The best part is that there are No external databases, no paid map API — the map uses OpenStreetMap tiles
+and Leaflet, and persistence is a JSON file. This is actually deliberate: it means
+the whole thing runs on a laptop without accounts, keys, or billing setup.
 
 ## How the discrepancy logic works
 
-For each facility:
+For each facility, we follow the following protocol:
 1. Take the last 5 citizen check-ins, majority-vote a **crowd status**
    (`functional` / `dirty` / `broken`), breaking ties toward the worse
-   status — for a public-health tool, a false alarm is cheaper than a
+   status because for a public-health tool, a false alarm is cheaper than a
    missed one.
 2. Compare that against the facility's **official record**. If the crowd
    says there's a problem, the official record says "operational," *and*
    that record hasn't been touched in 7+ days, the facility is flagged.
 3. **Priority score** = crowd-severity weight × 10 + days the record has
    gone stale (capped at 30) + number of corroborating negative reports.
-   Simple, explainable arithmetic — you can walk a judge through exactly
-   why any given facility ranks where it does.
-
-This logic lives entirely in `backend/logic.js` if you want to read or
-tune it.
 
 ## Authentication
 
@@ -80,8 +67,7 @@ rather than open routes:
   `base64url(JSON payload) + "." + HMAC-SHA256 signature`, signed with a
   server-side secret. Verification checks the signature with a
   constant-time comparison, then checks expiry (7-day TTL). No external
-  JWT library — same "explainable, no black boxes" philosophy as the rest
-  of the backend.
+  JWT library.
 - **Roles** — `citizen` or `municipal`, chosen at signup. Enforcement is
   server-side, not just a hidden UI link: `/api/flagged` and
   `/api/facilities/:id/official-update` require `requireAuth` +
@@ -96,11 +82,7 @@ rather than open routes:
   of submitting anonymously.
 - **Re-seeding** (`npm run seed`) resets the demo facilities/check-ins but
   preserves any accounts people have already signed up with.
-
-This lives in `backend/auth.js`, `backend/routes/auth.js`,
-`frontend/src/context/AuthContext.jsx`, and
-`frontend/src/components/ProtectedRoute.jsx`.
-
+  
 ## Running it locally
 
 You'll need Node.js 18+ installed. Two terminals:
@@ -124,25 +106,7 @@ Open `http://localhost:5173`. The dev server proxies `/api` calls to the
 backend automatically (see `frontend/vite.config.js`), so you don't need
 to configure CORS ports by hand.
 
-## Demo script (suggested)
-
-1. **Citizen map** (`/`) — point out the color-coded markers (teal =
-   fine, amber = needs cleaning, red = broken, grey = no reports yet).
-   Click a red marker — e.g. **Patia Square Toilet Block** — to open the
-   detail panel and show the report history.
-2. Click a facility, try to submit a check-in while logged out — show the
-   "sign in to report" prompt instead of a silent failure.
-3. **Sign up** as a citizen, then submit a check-in to show the live
-   report flow now attributed to an account.
-4. Sign out, sign back in (or sign up) as **municipal staff** — note the
-   "Municipal Dashboard" link only appears for that role, and going to
-   `/admin` directly while logged out or logged in as a citizen redirects
-   away.
-5. On the **Municipal Dashboard** (`/admin`) — this is the payoff:
-   facilities ranked by priority score, each one showing exactly *why*
-   it's flagged (crowd status vs. official record vs. days of silence).
-6. Click **"Mark as being addressed"** on one — show it drop out of the
-   queue and, back on the map, watch its marker reflect the update.
+This is temprorary.
 
 ## What we'd add with more time
 
